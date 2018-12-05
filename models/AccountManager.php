@@ -67,22 +67,15 @@ class AccountManager
      * @param $info
      * @return Account 
      */
-    public function getAccount($info)
+    public function getAccount($id)
     {
-        // get by name
-        if (is_string($info))
-        {
-            $query = $this->getDB()->prepare('SELECT * FROM accounts WHERE name = :name');
-            $query->bindValue('name', $info, PDO::PARAM_STR);
-            $query->execute();
-        }
+
         // get by id
-        elseif (is_int($info))
-        {
-            $query = $this->getDB()->prepare('SELECT * FROM accounts WHERE id = :id');
-            $query->bindValue('id', $info, PDO::PARAM_INT);
-            $query->execute();
-        }
+        $id = (int)$id;
+        $query = $this->getDB()->prepare('SELECT * FROM accounts WHERE id = :id');
+        $query->bindValue('id', $id, PDO::PARAM_INT);
+        $query->execute();
+        
 
         // $dataAccount est un tableau associatif contenant les informations d'un personnage
         $dataAccount = $query->fetch(PDO::FETCH_ASSOC);
@@ -135,11 +128,13 @@ class AccountManager
      *
      * @param Account $account
      */
-    public function updateAccount($id)
-    {
+    public function updateAccount(Account $account)
+    {   
+        
         $query = $this->getDb()->prepare('UPDATE accounts SET name = :name, balance = :balance WHERE id = :id');
-        $query->bindValue('name', $id, PDO::PARAM_INT);
-        $query->bindValue('balance', $_POST['balance'], PDO::PARAM_STR);
+        $query->bindValue('id', $account->getId(), PDO::PARAM_INT);
+        $query->bindValue('name', $account->getName(), PDO::PARAM_STR);
+        $query->bindValue('balance', $account->getBalance(), PDO::PARAM_INT);
         $query->execute();
     }
 
@@ -150,7 +145,7 @@ class AccountManager
      */
     public function deleteAccount($id)
     {
-
+        $id = (int)$id;
         $query = $this->getDb()->prepare('DELETE FROM accounts WHERE id = :id');
         $query->bindValue('id', $id, PDO::PARAM_INT);
         $query->execute();

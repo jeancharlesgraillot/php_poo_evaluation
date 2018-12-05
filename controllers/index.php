@@ -54,9 +54,41 @@ if (isset($_POST['name']) && !empty($_POST['name'])) {
 
 // Delete account
 
-if (isset($_POST['id'])) {
+if (isset($_POST['id']) && isset($_POST['delete']))
+{
     $delete = intval($_POST['id']);        
     $accountManager->deleteAccount($delete);
+}
+
+// Credit and debit account
+
+// Credit
+if (isset($_POST['balance']) && !empty($_POST['balance']) && isset($_POST['id'])) 
+{
+    if (isset($_POST['payment'])) 
+    { 
+        
+        $balance = intval($_POST['balance']);
+        $id = $_POST['id'];
+        $account = $accountManager->getAccount($id);
+        $account->creditAccount($balance); 
+        $accountManager->updateAccount($account);
+    }
+}
+
+// Debit
+
+if (isset($_POST['balance']) && !empty($_POST['balance']) && isset($_POST['id'])) 
+{
+    if (isset($_POST['debit'])) 
+    { 
+        
+        $balance = intval($_POST['balance']);
+        $id = $_POST['id'];
+        $account = $accountManager->getAccount($id);
+        $account->debitAccount($balance); 
+        $accountManager->updateAccount($account);
+    }
 }
 
 $accounts = $accountManager->getAccounts();

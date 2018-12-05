@@ -42,6 +42,18 @@ class Account
         }
     }
 
+    public function creditAccount($balance)
+    {
+        $balance = (int)$balance;
+        $this->balance += $balance;
+    }
+
+    public function debitAccount($balance)
+    {
+        $balance = (int)$balance;
+        $this->balance -= $balance;
+    }
+
     /**
      * Get the value of id
     */ 
@@ -57,6 +69,7 @@ class Account
     */ 
     public function setId($id)
     {
+    $id = (int)$id;
     $this->id = $id;
 
     return $this;
@@ -97,6 +110,7 @@ class Account
     */ 
     public function setBalance($balance)
     {
+    $balance = (int)$balance;
     $this->balance = $balance;
 
     return $this;

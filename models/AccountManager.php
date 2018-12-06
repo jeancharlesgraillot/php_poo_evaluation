@@ -5,7 +5,6 @@ declare(strict_types = 1);
 class AccountManager
 {
 
-// propriétés et méthodes de votre manager ici
     private $_db;
 
 
@@ -57,12 +56,12 @@ class AccountManager
 
         }
 
-        // Return of the array on which we could loop to list all accounts
+        // Return the array on which we could loop to list all accounts
         return $arrayOfAccounts;
     }
 
     /**
-     * Get one account by id or name
+     * Get one account by id
      *
      * @param $info
      * @return Account 
@@ -70,14 +69,13 @@ class AccountManager
     public function getAccount($id)
     {
 
-        // get by id
         $id = (int)$id;
         $query = $this->getDB()->prepare('SELECT * FROM accounts WHERE id = :id');
         $query->bindValue('id', $id, PDO::PARAM_INT);
         $query->execute();
         
 
-        // $dataAccount est un tableau associatif contenant les informations d'un personnage
+        // $dataAccount is an associative array wich contains character info
         $dataAccount = $query->fetch(PDO::FETCH_ASSOC);
 
         // We create a new account object with the associative array $dataAccount and return it

@@ -17,7 +17,7 @@ include('includes/header.php');
 		<select class="" name="name" required>
 			<option value="" disabled>Choisissez le type de compte à ouvrir</option>
 			// Listez les options possibles à choisir (compte courant, PEL, etc.) better with php 	
-			<option value="Compte courant">Compte Courant</option>
+			<option value="Compte courant">Compte courant</option>
   			<option value="PEL">PEL</option>
 			<option value="Livret A">Livret A</option>
 			<option value="Compte joint">Compte joint</option>
@@ -29,9 +29,9 @@ include('includes/header.php');
 
 	<div class="main-content flex">
 
-	<!-- Pour chaque compte enregistré en base de données, il faudra générer le code ci-dessous -->
+	<!-- For each account in database, we create a card-->
 
-	<?php // ######### DEBUT DU CODE A GENERER A CHAQUE TOUR DE BOUCLE ######### 
+	<?php
 	
 		foreach ($accounts as $account) {
 		
@@ -46,7 +46,7 @@ include('includes/header.php');
 
 					<p>Somme disponible : <?php echo $account->getBalance(); ?> €</p>
 
-					<!-- Formulaire pour dépot/retrait -->
+					<!-- Credit / debit form  -->
 					<h4>Dépot / Retrait</h4>
 					<form action="index.php" method="post">
 						<input type="hidden" name="id" value=" <?php echo $account->getId(); ?>"  required>
@@ -57,22 +57,37 @@ include('includes/header.php');
 					</form>
 
 
-					<!-- Formulaire pour virement -->
+					<!-- Transfer form -->
 			 		<form action="index.php" method="post">
 
 						<h4>Transfert</h4>
 						<label>Entrer une somme à transférer</label>
-						<input type="number" name="balance" placeholder="Ex: 300"  required>
-						<input type="hidden" name="idDebit" value="<?php // Afficher ici l'id du compte à débiter?>" required>
+						<input type="number" name="balanceTransfer" placeholder="Ex: 300"  required>
+						<input type="hidden" name="idDebit" value="<?php echo $account->getId(); ?>" required>
 						<label for="">Sélectionner un compte pour le virement</label>
 						<select name="idPayment" required>
 							<option value="" disabled>Choisir un compte</option>
-							<?php // Lister ici les comptes sur lesquels verser l'argent ?>
+
+							<!-- A loop to display all accounts available for transfer -->
+							<?php
+
+							foreach ($transferAccounts as $transferAccount) 
+								{
+									if ($account->getName() !== $transferAccount->getName()) 
+									{
+							?>	
+									<option value="<?php echo $transferAccount->getId();?>"><?php echo $transferAccount->getName();?></option>
+
+							<?php
+									}
+								}
+							?>
 						</select>
+						
 						<input type="submit" name="transfer" value="Transférer l'argent">
 					</form>
 
-					<!-- Formulaire pour suppression -->
+					<!-- Delete form -->
 			 		<form class="delete" action="index.php" method="post">
 				 		<input type="hidden" name="id" value="<?php echo $account->getId(); ?>"  required>
 				 		<input type="submit" name="delete" value="Supprimer le compte">

@@ -9,7 +9,7 @@ class Account
     
     private $id;
     private $name;
-    private $balance = 0;
+    private $balance;
 
     /**
      * Constructor
@@ -42,12 +42,14 @@ class Account
         }
     }
 
+    // Method for credit account
     public function creditAccount($balance)
     {
         $balance = (int)$balance;
         $this->balance += $balance;
     }
 
+    // Method for debit account
     public function debitAccount($balance)
     {
         $balance = (int)$balance;
